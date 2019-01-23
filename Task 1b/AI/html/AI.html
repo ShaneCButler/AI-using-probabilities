@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>AI</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-12"><meta name="DC.source" content="AI.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">filename = <span class="string">'csv.dat'</span>;
+M = csvread(filename,1,0); <span class="comment">%read in csv file</span>
+
+Smoking = M(:,1);
+Yellow_Fingers = M(:,2);
+Anxiety = M(:,3);
+Peer_Pressure = M(:,4);
+Genetics = M(:,5);
+Attention_Disorder = M(:,6);
+BED = M(:,7);
+Car_Accident = M(:,8);
+Fatigue = M(:,9);
+Allergy = M(:,10);
+Coughing = M(:,11);
+Lung_Cancer = M(:,12);
+
+<span class="comment">%the following is to generate the probabilities of variables with no</span>
+<span class="comment">%parents</span>
+ProbAnxiety = (sum(Anxiety) + 1)/(2000 + 2);
+ProbPeerPressure = (sum(Peer_Pressure) + 1)/(2000 + 2);
+ProbGenetics = (sum(Genetics) + 1)/(2000 + 2);
+ProbAllergy = (sum(Allergy) + 1)/(2000 + 2);
+ProbBED = (sum(BED) + 1)/(2000 + 2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Smoking=T|Peer Pressure=F, Anxiety=F)</span>
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Smoking(i) == 1 &amp;&amp; Anxiety(i) == 0 &amp;&amp; Peer_Pressure(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Smoking(i) == 0 &amp;&amp; Anxiety(i) == 0 &amp;&amp; Peer_Pressure(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+ProbSgivPPfandAnxf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Smoking=T|Peer Pressure=T, Anxiety=F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Smoking(i) == 1 &amp;&amp; Anxiety(i) == 0 &amp;&amp; Peer_Pressure(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Smoking(i) == 0 &amp;&amp; Anxiety(i) == 0 &amp;&amp; Peer_Pressure(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbSgivPPTandAnxf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Smoking=T|Peer Pressure=F, Anxiety=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Smoking(i) == 1 &amp;&amp; Anxiety(i) == 1 &amp;&amp; Peer_Pressure(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Smoking(i) == 0 &amp;&amp; Anxiety(i) == 1 &amp;&amp; Peer_Pressure(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbSgivPPfandAnxT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Smoking=T|Peer Pressure=T, Anxiety=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Smoking(i) == 1 &amp;&amp; Anxiety(i) == 1 &amp;&amp; Peer_Pressure(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Smoking(i) == 0 &amp;&amp; Anxiety(i) == 1 &amp;&amp; Peer_Pressure(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbSgivPPTandAnxT = count/(count+newcount);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Yellow Fingers = T| Smoking = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Yellow_Fingers(i) == 1 &amp;&amp; Smoking(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Yellow_Fingers(i) == 0 &amp;&amp; Smoking(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbYFgivSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Yellow Fingers = T| Smoking = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Yellow_Fingers(i) == 1 &amp;&amp; Smoking(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Yellow_Fingers(i) == 0 &amp;&amp; Smoking(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbYFgivST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Lung cancer=T|Genetics=F, Smoking=F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Lung_Cancer(i) == 1 &amp;&amp; Genetics(i) == 0 &amp;&amp; Smoking(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Lung_Cancer(i) == 0 &amp;&amp; Genetics(i) == 0 &amp;&amp; Smoking(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbLCgivGfandSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Lung cancer=T|Genetics=T, Smoking=F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Lung_Cancer(i) == 1 &amp;&amp; Genetics(i) == 1 &amp;&amp; Smoking(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Lung_Cancer(i) == 0 &amp;&amp; Genetics(i) == 1 &amp;&amp; Smoking(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbLCgivGTandSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Lung cancer=T|Genetics=F, Smoking=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Lung_Cancer(i) == 1 &amp;&amp; Genetics(i) == 0 &amp;&amp; Smoking(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Lung_Cancer(i) == 0 &amp;&amp; Genetics(i) == 0 &amp;&amp; Smoking(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbLCgivGfandST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% the following is to generate P(Lung cancer=T|Genetics=T, Smoking=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Lung_Cancer(i) == 1 &amp;&amp; Genetics(i) == 1 &amp;&amp; Smoking(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Lung_Cancer(i) == 0 &amp;&amp; Genetics(i) == 1 &amp;&amp; Smoking(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbLCgivGTandST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Attention Disorder = T| Genetics = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Attention_Disorder(i) == 1 &amp;&amp; Genetics(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Attention_Disorder(i) == 0 &amp;&amp; Genetics(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbADgivGf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Attention Disorder = T| Genetics = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Attention_Disorder(i) == 1 &amp;&amp; Genetics(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Attention_Disorder(i) == 0 &amp;&amp; Genetics(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbADgivGT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Coughing=T|Allergy=F, Lung cancer=F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Coughing(i) == 1 &amp;&amp; Allergy(i) == 0 &amp;&amp; Lung_Cancer(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Coughing(i) == 0 &amp;&amp; Allergy(i) == 0 &amp;&amp; Lung_Cancer(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCgivAllfandLCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Coughing=T|Allergy=T, Lung cancer=F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Coughing(i) == 1 &amp;&amp; Allergy(i) == 1 &amp;&amp; Lung_Cancer(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Coughing(i) == 0 &amp;&amp; Allergy(i) == 1 &amp;&amp; Lung_Cancer(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCgivAllTandLCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Coughing=T|Allergy=F, Lung cancer=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Coughing(i) == 1 &amp;&amp; Allergy(i) == 0 &amp;&amp; Lung_Cancer(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Coughing(i) == 0 &amp;&amp; Allergy(i) == 0 &amp;&amp; Lung_Cancer(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCgivAllfandLCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Coughing=T|Allergy=T, Lung cancer=T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Coughing(i) == 1 &amp;&amp; Allergy(i) == 1 &amp;&amp; Lung_Cancer(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Coughing(i) == 0 &amp;&amp; Allergy(i) == 1 &amp;&amp; Lung_Cancer(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCgivAllTandLCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Fatigue=T|Lung cancer=F, Coughing = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Fatigue(i) == 1 &amp;&amp; Lung_Cancer(i) == 0 &amp;&amp; Coughing(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Fatigue(i) == 0 &amp;&amp; Lung_Cancer(i) == 0 &amp;&amp; Coughing(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbFgivLCfandCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Fatigue=T|Lung cancer=T, Coughing = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Fatigue(i) == 1 &amp;&amp; Lung_Cancer(i) == 1 &amp;&amp; Coughing(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Fatigue(i) == 0 &amp;&amp; Lung_Cancer(i) == 1 &amp;&amp; Coughing(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbFgivLCTandCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Fatigue=T|Lung cancer=F, Coughing = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Fatigue(i) == 1 &amp;&amp; Lung_Cancer(i) == 0 &amp;&amp; Coughing(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Fatigue(i) == 0 &amp;&amp; Lung_Cancer(i) == 0 &amp;&amp; Coughing(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbFgivLCfandCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Fatigue=T|Lung cancer=T, Coughing = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Fatigue(i) == 1 &amp;&amp; Lung_Cancer(i) == 1 &amp;&amp; Coughing(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Fatigue(i) == 0 &amp;&amp; Lung_Cancer(i) == 1 &amp;&amp; Coughing(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbFgivLCTandCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Car_Accident=T|Attention_Disorder=F, Fatigue = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Car_Accident(i) == 1 &amp;&amp; Attention_Disorder(i) == 0 &amp;&amp; Fatigue(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Car_Accident(i) == 0 &amp;&amp; Attention_Disorder(i) == 0 &amp;&amp; Fatigue(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCAgivADfandFf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Car_Accident=T|Attention_Disorder=T, Fatigue = F)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Car_Accident(i) == 1 &amp;&amp; Attention_Disorder(i) == 1 &amp;&amp; Fatigue(i) == 0)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Car_Accident(i) == 0 &amp;&amp; Attention_Disorder(i) == 1 &amp;&amp; Fatigue(i) == 0)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCAgivADTandFf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Car_Accident=T|Attention_Disorder=F, Fatigue = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Car_Accident(i) == 1 &amp;&amp; Attention_Disorder(i) == 0 &amp;&amp; Fatigue(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Car_Accident(i) == 0 &amp;&amp; Attention_Disorder(i) == 0 &amp;&amp; Fatigue(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCAgivADfandFT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+<span class="comment">% The following is to generate P(Car_Accident=T|Attention_Disorder=T, Fatigue = T)</span>
+
+<span class="keyword">for</span> i = 1:2000
+    <span class="keyword">if</span> (Car_Accident(i) == 1 &amp;&amp; Attention_Disorder(i) == 1 &amp;&amp; Fatigue(i) == 1)
+        count = count + 1;
+    <span class="keyword">elseif</span> (Car_Accident(i) == 0 &amp;&amp; Attention_Disorder(i) == 1 &amp;&amp; Fatigue(i) == 1)
+        newcount = newcount + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+ProbCAgivADTandFT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+
+samples = zeros(1000000,9); <span class="comment">% a 2d array to store all the samples in</span>
+
+<span class="comment">%the following generates 1 million samples which conform to the desired</span>
+<span class="comment">%parameteres</span>
+<span class="keyword">for</span> i = 1:1000000
+    randomNumbers = [rand rand rand rand rand rand rand rand]; <span class="comment">% generate the random samples</span>
+    <span class="comment">%sampling anxiety</span>
+    <span class="keyword">if</span> randomNumbers(1) &lt;= ProbAnxiety
+        samples(i,1) = 1;
+    <span class="keyword">else</span>
+        samples(i,1) = 0;
+    <span class="keyword">end</span>
+     <span class="comment">%sampling peer pressure</span>
+    <span class="keyword">if</span> randomNumbers(2) &lt;= ProbPeerPressure
+        samples(i,2) = 1;
+    <span class="keyword">else</span>
+        samples(i,2) = 0;
+    <span class="keyword">end</span>
+     <span class="comment">%sampling Genetics</span>
+    <span class="keyword">if</span> randomNumbers(3) &lt;= ProbGenetics
+        samples(i,3) = 1;
+    <span class="keyword">else</span>
+        samples(i,3) = 0;
+    <span class="keyword">end</span>
+     <span class="comment">%sampling Allergy</span>
+    <span class="keyword">if</span> randomNumbers(4) &lt;= ProbAllergy
+        samples(i,4) = 1;
+    <span class="keyword">else</span>
+        samples(i,4) = 0;
+    <span class="keyword">end</span>
+     <span class="comment">%sampling Smoking</span>
+    <span class="keyword">if</span> samples(i,1) == 0 &amp;&amp; samples(i,2) == 0
+       <span class="keyword">if</span> randomNumbers(5) &lt;= ProbSgivPPfandAnxf
+           samples(i,5) = 1;
+       <span class="keyword">else</span>
+           samples(i,5) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,1) == 0 &amp;&amp; samples(i,2) == 1
+        <span class="keyword">if</span> randomNumbers(5) &lt;= ProbSgivPPTandAnxf
+           samples(i,5) = 1;
+       <span class="keyword">else</span>
+           samples(i,5) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,1) == 1 &amp;&amp; samples(i,2) == 0
+        <span class="keyword">if</span> randomNumbers(5) &lt;= ProbSgivPPfandAnxT
+           samples(i,5) = 1;
+       <span class="keyword">else</span>
+           samples(i,5) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,1) == 1 &amp;&amp; samples(i,2) == 1
+        <span class="keyword">if</span> randomNumbers(5) &lt;= ProbSgivPPTandAnxT
+           samples(i,5) = 1;
+       <span class="keyword">else</span>
+           samples(i,5) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+     <span class="comment">%sampling Lung Cancer</span>
+    <span class="keyword">if</span> samples(i,3) == 0 &amp;&amp; samples(i,5) == 0
+       <span class="keyword">if</span> randomNumbers(6) &lt;= ProbLCgivGfandSf
+           samples(i,6) = 1;
+       <span class="keyword">else</span>
+           samples(i,6) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,3) == 0 &amp;&amp; samples(i,5) == 1
+        <span class="keyword">if</span> randomNumbers(6) &lt;= ProbLCgivGfandST
+           samples(i,6) = 1;
+       <span class="keyword">else</span>
+           samples(i,6) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,3) == 1 &amp;&amp; samples(i,5) == 0
+        <span class="keyword">if</span> randomNumbers(6) &lt;= ProbLCgivGTandSf
+           samples(i,6) = 1;
+       <span class="keyword">else</span>
+           samples(i,6) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">elseif</span> samples(i,3) == 1 &amp;&amp; samples(i,5) == 1
+        <span class="keyword">if</span> randomNumbers(6) &lt;= ProbLCgivGTandST
+           samples(i,6) = 1;
+       <span class="keyword">else</span>
+           samples(i,6) = 0;
+       <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">%force coughing to be true</span>
+    <span class="keyword">if</span> samples(i,4) == 0 &amp;&amp; samples(i,6) == 0
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllfandLCf;
+    <span class="keyword">elseif</span> samples(i,4) == 0 &amp;&amp; samples(i,6) == 1
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllfandLCT;
+    <span class="keyword">elseif</span> samples(i,4) == 1 &amp;&amp; samples(i,6) == 0
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllTandLCf;
+    <span class="keyword">elseif</span> samples(i,4) == 1 &amp;&amp; samples(i,6) == 1
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllTandLCT;
+
+    <span class="keyword">end</span>
+    <span class="comment">%force fatigue to be true</span>
+    <span class="keyword">if</span> samples(i,6) == 0 &amp;&amp; samples(i,7) == 1
+       samples(i,8) = 1;
+       samples(i,9) = samples(i,9) * ProbFgivLCfandCT;
+    <span class="keyword">elseif</span> samples(i,6) == 1 &amp;&amp; samples(i,7) == 1
+       samples(i,8) = 1;
+       samples(i,9) = samples(i,9) *  ProbFgivLCTandCT;
+
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+topweight = 0;
+bottomweight = 0;
+
+<span class="comment">%the following calculates the weights of the samples that match the query</span>
+<span class="keyword">for</span> i = 1:1000000
+    <span class="keyword">if</span> (samples(i,5) == 1 &amp;&amp; samples(i,7) == 1 &amp;&amp; samples(i,8) == 1)
+        count = count + 1;
+        topweight = topweight + samples(i,9);
+    <span class="keyword">elseif</span> (samples(i,5) == 0 &amp;&amp; samples(i,7) == 1 &amp;&amp; samples(i,8) == 1)
+        newcount = newcount + 1;
+        bottomweight = bottomweight + samples(i,9);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+bottomweight = bottomweight + topweight; <span class="comment">%sum of all weights</span>
+ProbSmokinggivCoughingTrueandFatigueT =  topweight/bottomweight;<span class="comment">%estimate of probability</span>
+
+disp(ProbSmokinggivCoughingTrueandFatigueT);
+</pre><pre class="codeoutput">    0.8348
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+filename = 'csv.dat';
+M = csvread(filename,1,0); %read in csv file
+
+Smoking = M(:,1);
+Yellow_Fingers = M(:,2);
+Anxiety = M(:,3);
+Peer_Pressure = M(:,4);
+Genetics = M(:,5);
+Attention_Disorder = M(:,6);
+BED = M(:,7);
+Car_Accident = M(:,8);
+Fatigue = M(:,9);
+Allergy = M(:,10);
+Coughing = M(:,11);
+Lung_Cancer = M(:,12);
+
+%the following is to generate the probabilities of variables with no
+%parents
+ProbAnxiety = (sum(Anxiety) + 1)/(2000 + 2);
+ProbPeerPressure = (sum(Peer_Pressure) + 1)/(2000 + 2);
+ProbGenetics = (sum(Genetics) + 1)/(2000 + 2);
+ProbAllergy = (sum(Allergy) + 1)/(2000 + 2);
+ProbBED = (sum(BED) + 1)/(2000 + 2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Smoking=T|Peer Pressure=F, Anxiety=F)
+for i = 1:2000
+    if (Smoking(i) == 1 && Anxiety(i) == 0 && Peer_Pressure(i) == 0)
+        count = count + 1;
+    elseif (Smoking(i) == 0 && Anxiety(i) == 0 && Peer_Pressure(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+ProbSgivPPfandAnxf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Smoking=T|Peer Pressure=T, Anxiety=F)
+
+for i = 1:2000
+    if (Smoking(i) == 1 && Anxiety(i) == 0 && Peer_Pressure(i) == 1)
+        count = count + 1;
+    elseif (Smoking(i) == 0 && Anxiety(i) == 0 && Peer_Pressure(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbSgivPPTandAnxf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Smoking=T|Peer Pressure=F, Anxiety=T)
+
+for i = 1:2000
+    if (Smoking(i) == 1 && Anxiety(i) == 1 && Peer_Pressure(i) == 0)
+        count = count + 1;
+    elseif (Smoking(i) == 0 && Anxiety(i) == 1 && Peer_Pressure(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbSgivPPfandAnxT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Smoking=T|Peer Pressure=T, Anxiety=T)
+
+for i = 1:2000
+    if (Smoking(i) == 1 && Anxiety(i) == 1 && Peer_Pressure(i) == 1)
+        count = count + 1;
+    elseif (Smoking(i) == 0 && Anxiety(i) == 1 && Peer_Pressure(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbSgivPPTandAnxT = count/(count+newcount);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Yellow Fingers = T| Smoking = F)
+
+for i = 1:2000
+    if (Yellow_Fingers(i) == 1 && Smoking(i) == 0)
+        count = count + 1;
+    elseif (Yellow_Fingers(i) == 0 && Smoking(i) == 0) 
+        newcount = newcount + 1;
+    end
+end 
+
+ProbYFgivSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Yellow Fingers = T| Smoking = T)
+
+for i = 1:2000
+    if (Yellow_Fingers(i) == 1 && Smoking(i) == 1)
+        count = count + 1;
+    elseif (Yellow_Fingers(i) == 0 && Smoking(i) == 1) 
+        newcount = newcount + 1;
+    end
+end 
+
+ProbYFgivST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Lung cancer=T|Genetics=F, Smoking=F)
+
+for i = 1:2000
+    if (Lung_Cancer(i) == 1 && Genetics(i) == 0 && Smoking(i) == 0)
+        count = count + 1;
+    elseif (Lung_Cancer(i) == 0 && Genetics(i) == 0 && Smoking(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbLCgivGfandSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Lung cancer=T|Genetics=T, Smoking=F)
+
+for i = 1:2000
+    if (Lung_Cancer(i) == 1 && Genetics(i) == 1 && Smoking(i) == 0)
+        count = count + 1;
+    elseif (Lung_Cancer(i) == 0 && Genetics(i) == 1 && Smoking(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbLCgivGTandSf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Lung cancer=T|Genetics=F, Smoking=T)
+
+for i = 1:2000
+    if (Lung_Cancer(i) == 1 && Genetics(i) == 0 && Smoking(i) == 1)
+        count = count + 1;
+    elseif (Lung_Cancer(i) == 0 && Genetics(i) == 0 && Smoking(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbLCgivGfandST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% the following is to generate P(Lung cancer=T|Genetics=T, Smoking=T)
+
+for i = 1:2000
+    if (Lung_Cancer(i) == 1 && Genetics(i) == 1 && Smoking(i) == 1)
+        count = count + 1;
+    elseif (Lung_Cancer(i) == 0 && Genetics(i) == 1 && Smoking(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbLCgivGTandST = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Attention Disorder = T| Genetics = F)
+
+for i = 1:2000
+    if (Attention_Disorder(i) == 1 && Genetics(i) == 0)
+        count = count + 1;
+    elseif (Attention_Disorder(i) == 0 && Genetics(i) == 0) 
+        newcount = newcount + 1;
+    end
+end 
+
+ProbADgivGf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Attention Disorder = T| Genetics = T)
+
+for i = 1:2000
+    if (Attention_Disorder(i) == 1 && Genetics(i) == 1)
+        count = count + 1;
+    elseif (Attention_Disorder(i) == 0 && Genetics(i) == 1) 
+        newcount = newcount + 1;
+    end
+end 
+
+ProbADgivGT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Coughing=T|Allergy=F, Lung cancer=F)
+
+for i = 1:2000
+    if (Coughing(i) == 1 && Allergy(i) == 0 && Lung_Cancer(i) == 0)
+        count = count + 1;
+    elseif (Coughing(i) == 0 && Allergy(i) == 0 && Lung_Cancer(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCgivAllfandLCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Coughing=T|Allergy=T, Lung cancer=F)
+
+for i = 1:2000
+    if (Coughing(i) == 1 && Allergy(i) == 1 && Lung_Cancer(i) == 0)
+        count = count + 1;
+    elseif (Coughing(i) == 0 && Allergy(i) == 1 && Lung_Cancer(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCgivAllTandLCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Coughing=T|Allergy=F, Lung cancer=T)
+
+for i = 1:2000
+    if (Coughing(i) == 1 && Allergy(i) == 0 && Lung_Cancer(i) == 1)
+        count = count + 1;
+    elseif (Coughing(i) == 0 && Allergy(i) == 0 && Lung_Cancer(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCgivAllfandLCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Coughing=T|Allergy=T, Lung cancer=T)
+
+for i = 1:2000
+    if (Coughing(i) == 1 && Allergy(i) == 1 && Lung_Cancer(i) == 1)
+        count = count + 1;
+    elseif (Coughing(i) == 0 && Allergy(i) == 1 && Lung_Cancer(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCgivAllTandLCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Fatigue=T|Lung cancer=F, Coughing = F)
+
+for i = 1:2000
+    if (Fatigue(i) == 1 && Lung_Cancer(i) == 0 && Coughing(i) == 0)
+        count = count + 1;
+    elseif (Fatigue(i) == 0 && Lung_Cancer(i) == 0 && Coughing(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbFgivLCfandCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Fatigue=T|Lung cancer=T, Coughing = F)
+
+for i = 1:2000
+    if (Fatigue(i) == 1 && Lung_Cancer(i) == 1 && Coughing(i) == 0)
+        count = count + 1;
+    elseif (Fatigue(i) == 0 && Lung_Cancer(i) == 1 && Coughing(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbFgivLCTandCf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Fatigue=T|Lung cancer=F, Coughing = T)
+
+for i = 1:2000
+    if (Fatigue(i) == 1 && Lung_Cancer(i) == 0 && Coughing(i) == 1)
+        count = count + 1;
+    elseif (Fatigue(i) == 0 && Lung_Cancer(i) == 0 && Coughing(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbFgivLCfandCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Fatigue=T|Lung cancer=T, Coughing = T)
+
+for i = 1:2000
+    if (Fatigue(i) == 1 && Lung_Cancer(i) == 1 && Coughing(i) == 1)
+        count = count + 1;
+    elseif (Fatigue(i) == 0 && Lung_Cancer(i) == 1 && Coughing(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbFgivLCTandCT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Car_Accident=T|Attention_Disorder=F, Fatigue = F)
+
+for i = 1:2000
+    if (Car_Accident(i) == 1 && Attention_Disorder(i) == 0 && Fatigue(i) == 0)
+        count = count + 1;
+    elseif (Car_Accident(i) == 0 && Attention_Disorder(i) == 0 && Fatigue(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCAgivADfandFf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Car_Accident=T|Attention_Disorder=T, Fatigue = F)
+
+for i = 1:2000
+    if (Car_Accident(i) == 1 && Attention_Disorder(i) == 1 && Fatigue(i) == 0)
+        count = count + 1;
+    elseif (Car_Accident(i) == 0 && Attention_Disorder(i) == 1 && Fatigue(i) == 0)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCAgivADTandFf = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Car_Accident=T|Attention_Disorder=F, Fatigue = T)
+
+for i = 1:2000
+    if (Car_Accident(i) == 1 && Attention_Disorder(i) == 0 && Fatigue(i) == 1)
+        count = count + 1;
+    elseif (Car_Accident(i) == 0 && Attention_Disorder(i) == 0 && Fatigue(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCAgivADfandFT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+% The following is to generate P(Car_Accident=T|Attention_Disorder=T, Fatigue = T)
+
+for i = 1:2000
+    if (Car_Accident(i) == 1 && Attention_Disorder(i) == 1 && Fatigue(i) == 1)
+        count = count + 1;
+    elseif (Car_Accident(i) == 0 && Attention_Disorder(i) == 1 && Fatigue(i) == 1)
+        newcount = newcount + 1;    
+    end    
+end
+
+ProbCAgivADTandFT = (count + 1)/(count+newcount+2);
+count = 0;
+newcount = 0;
+
+
+samples = zeros(1000000,9); % a 2d array to store all the samples in
+
+%the following generates 1 million samples which conform to the desired
+%parameteres
+for i = 1:1000000
+    randomNumbers = [rand rand rand rand rand rand rand rand]; % generate the random samples
+    %sampling anxiety
+    if randomNumbers(1) <= ProbAnxiety
+        samples(i,1) = 1;
+    else
+        samples(i,1) = 0;
+    end    
+     %sampling peer pressure
+    if randomNumbers(2) <= ProbPeerPressure
+        samples(i,2) = 1;
+    else
+        samples(i,2) = 0;
+    end    
+     %sampling Genetics
+    if randomNumbers(3) <= ProbGenetics
+        samples(i,3) = 1;
+    else
+        samples(i,3) = 0;
+    end    
+     %sampling Allergy
+    if randomNumbers(4) <= ProbAllergy
+        samples(i,4) = 1;
+    else
+        samples(i,4) = 0;
+    end    
+     %sampling Smoking
+    if samples(i,1) == 0 && samples(i,2) == 0
+       if randomNumbers(5) <= ProbSgivPPfandAnxf
+           samples(i,5) = 1;
+       else
+           samples(i,5) = 0;
+       end    
+    elseif samples(i,1) == 0 && samples(i,2) == 1
+        if randomNumbers(5) <= ProbSgivPPTandAnxf
+           samples(i,5) = 1;
+       else
+           samples(i,5) = 0;
+       end    
+    elseif samples(i,1) == 1 && samples(i,2) == 0
+        if randomNumbers(5) <= ProbSgivPPfandAnxT
+           samples(i,5) = 1;
+       else
+           samples(i,5) = 0;
+       end    
+    elseif samples(i,1) == 1 && samples(i,2) == 1   
+        if randomNumbers(5) <= ProbSgivPPTandAnxT
+           samples(i,5) = 1;
+       else
+           samples(i,5) = 0;
+       end    
+    end
+    
+     %sampling Lung Cancer
+    if samples(i,3) == 0 && samples(i,5) == 0
+       if randomNumbers(6) <= ProbLCgivGfandSf
+           samples(i,6) = 1;
+       else
+           samples(i,6) = 0;
+       end    
+    elseif samples(i,3) == 0 && samples(i,5) == 1
+        if randomNumbers(6) <= ProbLCgivGfandST
+           samples(i,6) = 1;
+       else
+           samples(i,6) = 0;
+       end    
+    elseif samples(i,3) == 1 && samples(i,5) == 0
+        if randomNumbers(6) <= ProbLCgivGTandSf
+           samples(i,6) = 1;
+       else
+           samples(i,6) = 0;
+       end    
+    elseif samples(i,3) == 1 && samples(i,5) == 1   
+        if randomNumbers(6) <= ProbLCgivGTandST
+           samples(i,6) = 1;
+       else
+           samples(i,6) = 0;
+       end    
+    end
+    
+    %force coughing to be true
+    if samples(i,4) == 0 && samples(i,6) == 0
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllfandLCf;
+    elseif samples(i,4) == 0 && samples(i,6) == 1
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllfandLCT;
+    elseif samples(i,4) == 1 && samples(i,6) == 0
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllTandLCf; 
+    elseif samples(i,4) == 1 && samples(i,6) == 1   
+        samples(i,7) = 1;
+        samples(i,9) = ProbCgivAllTandLCT;
+         
+    end
+    %force fatigue to be true 
+    if samples(i,6) == 0 && samples(i,7) == 1
+       samples(i,8) = 1;
+       samples(i,9) = samples(i,9) * ProbFgivLCfandCT;   
+    elseif samples(i,6) == 1 && samples(i,7) == 1   
+       samples(i,8) = 1;
+       samples(i,9) = samples(i,9) *  ProbFgivLCTandCT;   
+    
+    end
+    
+end  
+
+topweight = 0;
+bottomweight = 0;
+
+%the following calculates the weights of the samples that match the query
+for i = 1:1000000
+    if (samples(i,5) == 1 && samples(i,7) == 1 && samples(i,8) == 1)
+        count = count + 1;
+        topweight = topweight + samples(i,9);
+    elseif (samples(i,5) == 0 && samples(i,7) == 1 && samples(i,8) == 1)
+        newcount = newcount + 1;
+        bottomweight = bottomweight + samples(i,9);
+    end    
+end
+
+bottomweight = bottomweight + topweight; %sum of all weights
+ProbSmokinggivCoughingTrueandFatigueT =  topweight/bottomweight;%estimate of probability
+
+disp(ProbSmokinggivCoughingTrueandFatigueT); 
+
+
+
+
+##### SOURCE END #####
+--></body></html>
